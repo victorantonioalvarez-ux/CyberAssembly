@@ -47,4 +47,13 @@ public class CintaTransportadora {
            lock.unlock();
        }
    }
+   
+   public int getOcupacion(){
+       lock.lock();
+       try{
+           return baterias.size();
+       }finally{
+           lock.unlock();
+       }
+   }
 }
