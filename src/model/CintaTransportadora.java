@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -13,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class CintaTransportadora {
     private int capacidadMax;
-    private Queue baterias;
+    private Queue<String> baterias = new ArrayDeque<>();
     private ReentrantLock lock = new ReentrantLock();
     private Condition cintaNoLlena = lock.newCondition();
     private Condition cintaNoVacia = lock.newCondition();
@@ -33,11 +34,17 @@ public class CintaTransportadora {
             lock.unlock();
         }
     }
-    
-    public String extraerBateria(int agvId)throws InterruptedException{
-        
-        return "";
-    }
-    
-    
+   public String extraerBateria(int robotId) throws InterruptedException {
+       lock.lock();
+       try{
+           while(baterias.isEmpty()){
+               cintaNoVacia.await();
+           }
+           String b = baterias.poll();
+           cintaNoLlena.signal();
+           return b;
+       }finally{
+           lock.unlock();
+       }
+   }
 }
