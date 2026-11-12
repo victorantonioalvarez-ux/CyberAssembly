@@ -13,13 +13,31 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class CintaTransportadora {
     private int capacidadMax;
-    private Queue Baterias;
+    private Queue baterias;
     private ReentrantLock lock = new ReentrantLock();
-    private Condition lleno = lock.newCondition();
-    private Condition vacio = lock.newCondition();
+    private Condition cintaNoLlena = lock.newCondition();
+    private Condition cintaNoVacia = lock.newCondition();
 
-    public CintaTransportadora(int capacidadMax, Queue Baterias) {
+    public CintaTransportadora(int capacidadMax, Queue baterias) {
         this.capacidadMax = capacidadMax;
-        this.Baterias = Baterias;
+        this.baterias = baterias;
     }
+    public void addBattery(int agvId, int numPaquete) throws InterruptedException{
+        try{
+            while(baterias.size() == capacidadMax){
+                cintaNoLlena.wait();
+            }
+            baterias.add("BAT-"+agvId+ "-"+numPaquete);
+            cintaNoVacia.signal();
+        }finally{
+            lock.unlock();
+        }
+    }
+    
+    public String extraerBateria(int agvId)throws InterruptedException{
+        
+        return "";
+    }
+    
+    
 }
