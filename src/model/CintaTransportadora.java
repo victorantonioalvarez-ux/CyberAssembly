@@ -22,3 +22,4 @@ public class CintaTransportadora {
         this.capacidadMax = capacidadMax;
         this.Baterias = Baterias;
     }
+}
