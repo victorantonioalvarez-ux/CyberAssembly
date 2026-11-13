@@ -19,14 +19,14 @@ public class CintaTransportadora {
     private Condition cintaNoLlena = lock.newCondition();
     private Condition cintaNoVacia = lock.newCondition();
 
-    public CintaTransportadora(int capacidadMax, Queue baterias) {
+    public CintaTransportadora(int capacidadMax) {
         this.capacidadMax = capacidadMax;
-        this.baterias = baterias;
     }
     public void addBattery(int agvId, int numPaquete) throws InterruptedException{
+        lock.lock();
         try{
-            while(baterias.size() == capacidadMax){
-                cintaNoLlena.wait();
+            while(baterias.size() >= capacidadMax){
+                cintaNoLlena.await();
             }
             baterias.add("BAT-"+agvId+ "-"+numPaquete);
             cintaNoVacia.signal();
