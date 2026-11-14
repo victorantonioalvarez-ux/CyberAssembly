@@ -6,6 +6,7 @@ package model;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -15,7 +16,9 @@ public class CentralSoldadura {
 
     private Semaphore estaciones;
     private boolean[] ocupada;
-    ConcurrentLinkedQueue<Integer> libres;
+    private ConcurrentLinkedQueue<Integer> libres;
+    private Semaphore tablero = new Semaphore(1, true);
+    private AtomicInteger certificados = new AtomicInteger();
 
     public CentralSoldadura(int numEstaciones) {
         this.estaciones = new Semaphore(numEstaciones, true);
@@ -38,5 +41,15 @@ public class CentralSoldadura {
     public void liberar(int robotId, int estacion){
         libres.offer(estacion);
         estaciones.release();
+    }
+    
+    public void registroCentral(int robotId) throws InterruptedException{
+        tablero.acquire();
+        try{
+            Thread.sleep(50);
+            certificados.incrementAndGet();
+        }finally {
+            tablero.release();
+        }
     }
 }
