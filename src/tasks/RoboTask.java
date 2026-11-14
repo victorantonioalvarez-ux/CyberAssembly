@@ -32,17 +32,20 @@ public class RoboTask implements Runnable{
     
     @Override
     public void run(){
-        while(Thread.currentThread().isInterrupted()) {
-            try{
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
                 supervisor.verificaEstado(id);
                 String bateria = cinta.extraerBateria(id);
-                int num = soldadura.coger(id);
-                Thread.sleep(r.nextInt());
-                soldadura.liberar(id,num);
+                int estacion = soldadura.coger(id);
+                try {
+                    Thread.sleep(200 + r.nextInt(500));
+                } finally {
+                    soldadura.liberar(id, estacion);
+                }
                 soldadura.registroCentral(id);
-            }catch{
-                Thread.currentThread().interrupt();
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

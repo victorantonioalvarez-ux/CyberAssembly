@@ -4,10 +4,17 @@
  */
 package model;
 
+import java.util.concurrent.Semaphore;
+
 /**
  *
  * @author Alumne
  */
 public class CentralSoldadura {
+    private Semaphore estaciones;
+    private boolean[] ocupada;
+    private Object candadoArray = new Object();
+    
+    
     
 }

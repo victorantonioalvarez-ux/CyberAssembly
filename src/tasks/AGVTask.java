@@ -27,13 +27,15 @@ public class AGVTask implements Runnable {
     }
 
     @Override
-    public void run(){
+    public void run() {
         try {
-            while(Thread.currentThread().isInterrupted()) {
-                cinta.addBattery(this.id, countP);
+            while (!Thread.currentThread().isInterrupted()) {
+                cinta.addBattery(id, countP);
                 countP++;
-                Thread.sleep(r.nextInt());
+                Thread.sleep(100 + r.nextInt(400));
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
