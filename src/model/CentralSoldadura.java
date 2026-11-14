@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Alumne
  */
 public class CentralSoldadura {
-    
+
     private Semaphore estaciones;
     private boolean[] ocupada;
     private ConcurrentLinkedQueue<Integer> libres;
@@ -30,29 +30,40 @@ public class CentralSoldadura {
             libres.offer(i);
         }
     }
-    
-    
-    public int coger(int robotId) throws InterruptedException{
+
+    public int getEstacionesOcupadas() {
+        return totalEstaciones - estaciones.availablePermits();
+    }
+
+    public int getTotalEstaciones() {
+        return totalEstaciones;
+    }
+
+    public int getCertificados() {
+        return certificados.get();
+    }
+
+    public int coger(int robotId) throws InterruptedException {
         estaciones.acquire();
         Integer estacion = libres.poll();
-        if(estacion == null) {
+        if (estacion == null) {
             estaciones.release();
             throw new IllegalStateException("Sin estacion libre pese al permiso");
         }
         return estacion;
     }
-    
-    public void liberar(int robotId, int estacion){
+
+    public void liberar(int robotId, int estacion) {
         libres.offer(estacion);
         estaciones.release();
     }
-    
-    public void registroCentral(int robotId) throws InterruptedException{
+
+    public void registroCentral(int robotId) throws InterruptedException {
         tablero.acquire();
-        try{
+        try {
             Thread.sleep(50);
             certificados.incrementAndGet();
-        }finally {
+        } finally {
             tablero.release();
         }
     }
