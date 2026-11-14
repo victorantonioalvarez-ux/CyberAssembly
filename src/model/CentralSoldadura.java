@@ -35,5 +35,8 @@ public class CentralSoldadura {
         return estacion;
     }
     
-    
+    public void liberar(int robotId, int estacion){
+        libres.offer(estacion);
+        estaciones.release();
+    }
 }
