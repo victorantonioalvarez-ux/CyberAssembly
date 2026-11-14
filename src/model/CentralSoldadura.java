@@ -25,6 +25,7 @@ public class CentralSoldadura {
         this.totalEstaciones = numEstaciones;
         this.estaciones = new Semaphore(numEstaciones, true);
         this.ocupada = new boolean[numEstaciones];
+        this.libres = new ConcurrentLinkedQueue<>();
         for (int i = 0; i < numEstaciones; i++) {
             libres.offer(i);
         }
