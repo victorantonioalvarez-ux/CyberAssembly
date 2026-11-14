@@ -24,9 +24,9 @@ public class SupervisorTask implements Runnable{
     public void run() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                Thread.sleep(3000 + r.nextInt(3000)); // funcionamiento normal
+                Thread.sleep(3000 + r.nextInt(3000));
                 supervisor.activarAlerta();
-                Thread.sleep(1500 + r.nextInt(1000)); // alerta activa
+                Thread.sleep(1500 + r.nextInt(1000));
                 supervisor.resolverAlerta();
             }
         } catch (InterruptedException e) {
