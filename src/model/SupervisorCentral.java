@@ -9,5 +9,26 @@ package model;
  * @author Alumne
  */
 public class SupervisorCentral {
+    private boolean alerta = false;
+    private int robotsPausados = 0;
     
+    public synchronized void verificaEstado(int robotId) throws InterruptedException {
+        while (alerta) {
+            robotsPausados++;
+            try {
+                wait();
+            } finally {
+                robotsPausados--;
+            }
+        }
+    }
+    
+    public synchronized void activarAlerta() {
+        alerta = true;
+    }
+
+    public synchronized void resolverAlerta() {
+        alerta = false;
+        notifyAll();
+    }
 }
