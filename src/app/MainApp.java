@@ -4,6 +4,16 @@
  */
 package app;
 
+import java.util.ArrayList;
+import java.util.List;
+import model.CentralSoldadura;
+import model.CintaTransportadora;
+import model.SupervisorCentral;
+import tasks.AGVTask;
+import tasks.RoboTask;
+import tasks.SupervisorTask;
+import view.DashboardTask;
+
 /**
  *
  * @author Alumne
@@ -23,6 +33,23 @@ public class MainApp {
         IO.println("Numero de AGVs: "+ numAgvs);
         IO.println("Duracion de la simulacion (segundos): "+ segundos);
         
-        
+        CintaTransportadora cinta = new CintaTransportadora(capacidad);
+        CentralSoldadura soldadura = new CentralSoldadura(estaciones);
+        SupervisorCentral supervisor = new SupervisorCentral();
+
+        List<RoboTask> robots = new ArrayList<>();
+        List<Thread> hilos = new ArrayList<>();
+
+        for (int i = 1; i <= numRobots; i++) {
+            RoboTask rt = new RoboTask(i, supervisor, cinta, soldadura);
+            robots.add(rt);
+            hilos.add(new Thread(rt, "Robot-" + i));
+        }
+        for (int i = 1; i <= numAgvs; i++) {
+            hilos.add(new Thread(new AGVTask(i, 1, cinta), "AGV-" + i));
+        }
+        hilos.add(new Thread(new SupervisorTask(supervisor), "Supervisor"));
+        hilos.add(new Thread(new DashboardTask(cinta, soldadura, supervisor,
+                robots, capacidad), "Dashboard"));
     }
 }
