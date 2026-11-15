@@ -30,8 +30,18 @@ public class RoboTask implements Runnable{
         this.cinta = cinta;
         this.soldadura = soldadura;
     }
-    
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public int getCochesTerminados() {
+        return cochesTerminados;
+    }
     
     @Override
     public void run(){
