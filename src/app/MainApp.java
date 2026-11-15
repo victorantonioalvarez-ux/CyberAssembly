@@ -6,6 +6,7 @@ package app;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import model.CentralSoldadura;
 import model.CintaTransportadora;
 import model.SupervisorCentral;
@@ -22,17 +23,17 @@ public class MainApp {
 
     void main() {
 
-        int estaciones = 3;
-        int capacidad = 5;
-        int numRobots = 12;
-        int numAgvs = 5;
-        int segundos = 30;
-
-        IO.println("Numero de estaciones de soldadura: " + estaciones);
-        IO.println("Capacidad de la cinta: " + capacidad);
-        IO.println("Numero de robots: " + numRobots);
-        IO.println("Numero de AGVs: " + numAgvs);
-        IO.println("Duracion de la simulacion (segundos): " + segundos);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Numero de estaciones de soldadura: ");
+        int estaciones = sc.nextInt();
+        System.out.print("Capacidad de la cinta: ");
+        int capacidad = sc.nextInt();
+        System.out.print("Numero de robots: ");
+        int numRobots = sc.nextInt();
+        System.out.print("Numero de AGVs: ");
+        int numAgvs = sc.nextInt();
+        System.out.print("Duracion de la simulacion (segundos): ");
+        int segundos = sc.nextInt();
 
         CintaTransportadora cinta = new CintaTransportadora(capacidad);
         CentralSoldadura soldadura = new CentralSoldadura(estaciones);
